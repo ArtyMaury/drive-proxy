@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <title>Politique de confidentialite - Drive Proxy</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%93%81</text></svg>"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-icon">&#128193;</span>
+        <span>Drive Proxy</span>
+      </a>
+    </header>
+
+    <main class="legal">
+      <article class="card legal-card">
+        <h1>Politique de confidentialite</h1>
+        <p class="muted legal-updated">Derniere mise a jour : 21 juin 2026</p>
+
+        <p>
+          Drive Proxy (ci-apres &laquo; l'application &raquo; ou &laquo; le
+          service &raquo;) est une application web qui permet a un utilisateur
+          autorise de consulter les fichiers de son propre Google Drive et d'y
+          envoyer des fichiers, en passant par un serveur relais
+          (Cloudflare Worker). La presente politique de confidentialite explique
+          quelles donnees sont traitees, comment, et dans quel but.
+        </p>
+
+        <h2>1. Responsable du traitement</h2>
+        <p>
+          Le service est exploite a titre prive. Pour toute question relative a
+          cette politique ou a vos donnees, vous pouvez nous contacter a
+          l'adresse :
+          <a href="mailto:drive-proxy@maury.app">drive-proxy@maury.app</a>.
+        </p>
+
+        <h2>2. Donnees que nous traitons</h2>
+        <p>L'application traite les categories de donnees suivantes :</p>
+        <ul>
+          <li>
+            <strong>Donnees de profil Google de base</strong> : votre adresse
+            e-mail, votre nom d'affichage et l'URL de votre photo de profil,
+            obtenus via les autorisations <code>openid</code> et
+            <code>email</code> lors de la connexion. Ces informations servent a
+            vous identifier et a verifier que votre compte fait partie des
+            utilisateurs autorises.
+          </li>
+          <li>
+            <strong>Contenu de votre Google Drive</strong> : les metadonnees
+            (nom, type, date, identifiant) des fichiers et dossiers necessaires
+            a l'affichage et a la navigation, ainsi que le contenu des fichiers
+            que vous choisissez d'envoyer (upload) ou de creer via
+            l'application.
+          </li>
+          <li>
+            <strong>Jetons d'authentification Google</strong> (jetons d'acces et
+            de rafraichissement OAuth) permettant a l'application d'agir en votre
+            nom aupres de l'API Google Drive.
+          </li>
+        </ul>
+
+        <h2>3. Acces a Google Drive et autorisations utilisees</h2>
+        <p>
+          Pour fonctionner, l'application demande votre consentement explicite
+          pour les autorisations (scopes) Google suivantes :
+        </p>
+        <ul>
+          <li>
+            <code>https://www.googleapis.com/auth/drive.readonly</code> &mdash;
+            acces en <strong>lecture seule</strong> a votre Google Drive, afin
+            d'afficher et de parcourir vos fichiers et dossiers existants.
+          </li>
+          <li>
+            <code>https://www.googleapis.com/auth/drive.file</code> &mdash; acces
+            limite aux <strong>fichiers crees ou ouverts par l'application</strong>,
+            afin de permettre l'envoi de nouveaux fichiers et la creation de
+            dossiers.
+          </li>
+        </ul>
+        <p>
+          L'application utilise ces acces uniquement pour fournir les
+          fonctionnalites visibles a l'ecran (lister, naviguer, envoyer des
+          fichiers, creer des dossiers). Elle n'effectue aucune autre operation
+          sur votre Drive.
+        </p>
+
+        <h2>4. Conformite a la politique des donnees utilisateur Google API</h2>
+        <p>
+          L'utilisation et le transfert, par l'application, des informations
+          recues depuis les API Google respectent la
+          <a
+            href="https://developers.google.com/terms/api-services-user-data-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Politique relative aux donnees utilisateur des services API
+            Google</a
+          >, y compris ses exigences en matiere d'utilisation limitee
+          (&laquo; Limited Use &raquo;).
+        </p>
+        <p>
+          En particulier, les donnees obtenues via les API Google
+          <strong>ne sont pas</strong> utilisees a des fins publicitaires,
+          <strong>ne sont pas</strong> vendues, et <strong>ne sont pas</strong>
+          transferees a des tiers, sauf lorsque cela est strictement necessaire
+          pour fournir le service, pour des raisons de securite, ou pour se
+          conformer a la loi applicable.
+        </p>
+
+        <h2>5. Finalites du traitement</h2>
+        <p>Vos donnees sont traitees exclusivement pour :</p>
+        <ul>
+          <li>vous authentifier et controler l'acces au service ;</li>
+          <li>
+            afficher et parcourir le contenu de votre Google Drive a votre
+            demande ;
+          </li>
+          <li>
+            envoyer dans votre Google Drive les fichiers que vous transmettez et
+            creer les dossiers que vous demandez ;
+          </li>
+          <li>assurer la securite et le bon fonctionnement du service.</li>
+        </ul>
+
+        <h2>6. Stockage et conservation des donnees</h2>
+        <p>
+          L'application ne possede <strong>aucune base de donnees</strong> et ne
+          conserve durablement <strong>ni</strong> le contenu de vos fichiers
+          <strong>ni</strong> vos metadonnees Drive sur ses serveurs. Les
+          fichiers que vous envoyez transitent par le serveur relais le temps de
+          l'envoi vers Google, puis ne sont pas conserves.
+        </p>
+        <p>
+          Vos informations de session (adresse e-mail, nom, photo et jetons
+          Google) sont stockees uniquement dans un
+          <strong>cookie chiffre et signe</strong> (AES-GCM), depose sur votre
+          navigateur, avec les attributs <code>HttpOnly</code>,
+          <code>Secure</code> et <code>SameSite=Lax</code>. Ces donnees restent
+          donc cote client. La session expire automatiquement et est supprimee
+          lorsque vous vous deconnectez ou que le cookie expire.
+        </p>
+
+        <h2>7. Partage des donnees</h2>
+        <p>
+          Nous ne vendons ni ne louons vos donnees. Les seuls destinataires
+          techniques impliques sont :
+        </p>
+        <ul>
+          <li>
+            <strong>Google</strong>, dont les API Drive et le service
+            d'authentification sont utilises a votre demande
+            (<a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Politique de confidentialite de Google</a
+            >) ;
+          </li>
+          <li>
+            <strong>Cloudflare</strong>, qui heberge le serveur relais et le
+            frontend
+            (<a
+              href="https://www.cloudflare.com/privacypolicy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Politique de confidentialite de Cloudflare</a
+            >).
+          </li>
+        </ul>
+
+        <h2>8. Securite</h2>
+        <p>
+          Les communications se font en HTTPS. Les secrets serveur (identifiants
+          OAuth, cle de chiffrement de session) restent cote serveur. Le flux
+          OAuth est protege contre la falsification de requete (parametre
+          <code>state</code>) et utilise le mecanisme PKCE. L'acces au service
+          est restreint a une liste d'adresses e-mail explicitement autorisees.
+        </p>
+
+        <h2>9. Vos droits et la revocation de l'acces</h2>
+        <p>
+          Vous pouvez a tout moment retirer l'autorisation d'acces accordee a
+          l'application depuis les
+          <a
+            href="https://myaccount.google.com/permissions"
+            target="_blank"
+            rel="noopener noreferrer"
+            >parametres de securite de votre compte Google</a
+          >. Vous pouvez egalement vous deconnecter du service pour supprimer
+          immediatement le cookie de session. Pour toute demande relative a vos
+          donnees, contactez
+          <a href="mailto:drive-proxy@maury.app">drive-proxy@maury.app</a>.
+        </p>
+
+        <h2>10. Modifications de cette politique</h2>
+        <p>
+          Cette politique de confidentialite peut etre mise a jour. En cas de
+          changement important, la date de derniere mise a jour figurant en haut
+          de cette page sera modifiee.
+        </p>
+
+        <h2>11. Contact</h2>
+        <p>
+          Pour toute question concernant cette politique de confidentialite,
+          ecrivez-nous a :
+          <a href="mailto:drive-proxy@maury.app">drive-proxy@maury.app</a>.
+        </p>
+
+        <p class="legal-back">
+          <a href="/">&larr; Retour a l'application</a>
+        </p>
+      </article>
+    </main>
+  </body>
+</html>

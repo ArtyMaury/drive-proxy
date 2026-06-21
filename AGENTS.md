@@ -108,6 +108,10 @@ fait donc en **poussant sur `main`** : Cloudflare build & déploie automatiqueme
   `npm run deploy` / `wrangler deploy` à la main pour les déploiements normaux.
 - Toujours inspecter `git status` / `git diff` et ne stager que les fichiers
   voulus. Ne jamais committer de secrets ni de fichiers temporaires.
+- **À la fin de chaque tâche, tu peux déployer en commitant puis en poussant sur
+  `main`** (commit + `git push`), sans demander de confirmation supplémentaire.
+  Cela reste soumis aux règles ci-dessus : inspecter `git status` / `git diff`,
+  ne stager que les fichiers de la tâche, et ne jamais committer de secrets.
 
 ## Commandes utiles
 

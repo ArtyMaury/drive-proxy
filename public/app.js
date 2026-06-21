@@ -385,10 +385,11 @@ async function uploadOne(file) {
   if (parent) form.append("parent", parent);
 
   try {
-    await api("/api/upload", { method: "POST", body: form });
+    const result = await api("/api/upload", { method: "POST", body: form });
     ui.spinner.remove();
     ui.status.textContent = "Envoye \u2713";
     ui.status.classList.add("ok");
+    addUploadLinks(ui.li, result);
     return true;
   } catch (e) {
     ui.spinner.remove();
@@ -396,6 +397,41 @@ async function uploadOne(file) {
     ui.status.classList.add("err");
     return false;
   }
+}
+
+/** Ajoute sous l'item d'upload les liens dossier + telechargement direct. */
+function addUploadLinks(li, result) {
+  if (!result) return;
+  const links = document.createElement("div");
+  links.className = "upload-links";
+
+  if (result.folderLink) {
+    const folder = document.createElement("a");
+    folder.href = result.folderLink;
+    folder.target = "_blank";
+    folder.rel = "noopener";
+    folder.textContent = "\u{1F4C1} Dossier";
+    links.appendChild(folder);
+  }
+
+  // Lien de telechargement direct (absent pour les Google Docs natifs).
+  if (result.webContentLink) {
+    const dl = document.createElement("a");
+    dl.href = result.webContentLink;
+    dl.target = "_blank";
+    dl.rel = "noopener";
+    dl.textContent = "\u2B07\uFE0F Telecharger";
+    links.appendChild(dl);
+  } else if (result.webViewLink) {
+    const view = document.createElement("a");
+    view.href = result.webViewLink;
+    view.target = "_blank";
+    view.rel = "noopener";
+    view.textContent = "\u2197 Ouvrir";
+    links.appendChild(view);
+  }
+
+  if (links.childElementCount) li.appendChild(links);
 }
 
 async function handleFiles(fileList) {

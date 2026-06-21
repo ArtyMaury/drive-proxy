@@ -120,7 +120,7 @@ export async function uploadFile(accessToken, { name, mimeType, parentId, body, 
   }
 
   const initRes = await fetch(
-    `${UPLOAD_API}?uploadType=resumable&fields=id,name,mimeType,size,webViewLink,parents`,
+    `${UPLOAD_API}?uploadType=resumable&fields=id,name,mimeType,size,webViewLink,webContentLink,parents`,
     {
       method: "POST",
       headers: initHeaders,

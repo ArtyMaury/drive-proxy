@@ -311,7 +311,13 @@ async function handleUpload(request, env) {
       body: file.stream(),
       size: file.size,
     });
-    return withCookie(json(data), setCookie);
+    // Lien vers le dossier de destination dans l'UI Drive.
+    // Sans parent explicite, le fichier atterrit a la racine ("Mon Drive").
+    const folderId = parentId || (data.parents && data.parents[0]) || null;
+    const folderLink = folderId
+      ? `https://drive.google.com/drive/folders/${folderId}`
+      : "https://drive.google.com/drive/my-drive";
+    return withCookie(json({ ...data, folderLink }), setCookie);
   } catch (e) {
     return withCookie(json({ error: String(e.message || e) }, { status: 502 }), setCookie);
   }

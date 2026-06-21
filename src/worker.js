@@ -117,21 +117,33 @@ function withCookie(response, setCookie) {
 // ---------------------------------------------------------------------------
 
 async function handleAuthLogin(request, env) {
-  const redirectUri = `${baseUrl(request, env)}/api/auth/callback`;
-  const state = generateState();
-  const codeVerifier = generateCodeVerifier();
-  const codeChallenge = await deriveCodeChallenge(codeVerifier);
+  try {
+    const redirectUri = `${baseUrl(request, env)}/api/auth/callback`;
+    const state = generateState();
+    const codeVerifier = generateCodeVerifier();
+    const codeChallenge = await deriveCodeChallenge(codeVerifier);
 
-  const authUrl = buildAuthUrl({
-    clientId: env.GOOGLE_CLIENT_ID,
-    redirectUri,
-    state,
-    codeChallenge,
-  });
+    const authUrl = buildAuthUrl({
+      clientId: env.GOOGLE_CLIENT_ID,
+      redirectUri,
+      state,
+      codeChallenge,
+    });
 
-  // On stocke state + verifier dans un cookie temporaire chiffre.
-  const cookie = await oauthStateCookie({ state, codeVerifier }, env);
-  return redirect(authUrl, { "Set-Cookie": cookie });
+    // On stocke state + verifier dans un cookie temporaire chiffre.
+    const cookie = await oauthStateCookie({ state, codeVerifier }, env);
+    return redirect(authUrl, { "Set-Cookie": cookie });
+  } catch (e) {
+    console.error("[auth/login] echec:", e && e.stack ? e.stack : e);
+    return json(
+      {
+        error: "auth_login_failed",
+        name: e?.name || null,
+        detail: String(e?.message || e),
+      },
+      { status: 500 },
+    );
+  }
 }
 
 async function handleAuthCallback(request, env) {
@@ -333,11 +345,25 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    // Verifie la presence des secrets indispensables (message d'erreur clair).
-    if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET || !env.SESSION_SECRET) {
-      if (url.pathname.startsWith("/api/")) {
+    // Verifie la presence des variables/secrets indispensables.
+    // On liste precisement ce(ux) qui manque(nt) pour un diagnostic clair.
+    if (url.pathname.startsWith("/api/")) {
+      const required = [
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET",
+        "SESSION_SECRET",
+        "ALLOWED_EMAILS",
+        "APP_BASE_URL",
+      ];
+      const missing = required.filter((k) => !env[k]);
+      if (missing.length > 0) {
+        console.error("[config] Variables manquantes:", missing.join(", "));
         return json(
-          { error: "server_misconfigured", detail: "Secrets manquants (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / SESSION_SECRET)." },
+          {
+            error: "server_misconfigured",
+            missing,
+            detail: `Variables manquantes cote Worker : ${missing.join(", ")}. Definis-les via 'wrangler secret put <NOM>' ou dans le dashboard.`,
+          },
           { status: 500 },
         );
       }
@@ -347,7 +373,17 @@ export default {
       try {
         return await handleApi(request, env);
       } catch (e) {
-        return json({ error: "internal", detail: String(e.message || e) }, { status: 500 });
+        // Log complet cote serveur (visible dans `wrangler tail`).
+        console.error("[api] Erreur non geree:", e && e.stack ? e.stack : e);
+        return json(
+          {
+            error: "internal",
+            name: e?.name || null,
+            detail: String(e?.message || e),
+            stack: e?.stack ? String(e.stack) : null,
+          },
+          { status: 500 },
+        );
       }
     }
 

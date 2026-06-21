@@ -8,12 +8,16 @@ const TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
 
 // Scopes demandes :
 // - openid/email : pour connaitre l'identite (allowlist).
-// - drive.file : acces SEULEMENT aux fichiers crees/ouverts via cette appli.
-//   C'est le scope le moins intrusif. Si tu veux lister TOUT le Drive
-//   existant, remplace par "https://www.googleapis.com/auth/drive".
+// - drive.readonly : lecture de TOUT le Drive existant (liste/navigation).
+//   Scope "sensible" : peut exiger une verification Google pour la prod
+//   (en mode Testing, OK pour ~100 test users).
+// - drive.file : ecriture LIMITEE aux fichiers crees/ouverts via cette appli.
+//   Necessaire pour l'upload et la creation de dossiers (drive.readonly seul
+//   ne permet pas d'ecrire).
 export const SCOPES = [
   "openid",
   "email",
+  "https://www.googleapis.com/auth/drive.readonly",
   "https://www.googleapis.com/auth/drive.file",
 ].join(" ");
 

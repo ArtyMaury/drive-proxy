@@ -25,10 +25,11 @@ Cloudflare Worker  ----- OAuth + API Drive ----->  Google
   allowlist d'emails, et proxifie les appels Drive (liste, dossiers, upload).
 - **Sessions** : cookie chiffre (AES-GCM) contenant l'email + les tokens Google.
 
-> **Scope Drive utilise** : `drive.file`. L'appli ne voit que les fichiers
-> qu'elle a elle-meme crees/ouverts (le plus sur, validation Google rapide).
-> Pour voir **tout** le Drive existant de l'utilisateur, voir
-> [Variante : acces complet au Drive](#variante--acces-complet-au-drive).
+> **Scopes Drive utilises** : `drive.readonly` (lecture de **tout** le Drive
+> existant, pour la navigation) + `drive.file` (ecriture limitee aux fichiers
+> crees/ouverts par l'appli, pour l'upload et la creation de dossiers).
+> `drive.readonly` est un scope "sensible" : voir
+> [Note sur la verification Google](#note-sur-la-verification-google).
 
 ---
 
@@ -51,7 +52,8 @@ Cloudflare Worker  ----- OAuth + API Drive ----->  Google
    _APIs & Services > OAuth consent screen_.
    - User type : **External**.
    - Renseigne le nom de l'app, ton email de support, etc.
-   - **Scopes** : ajoute `.../auth/drive.file` (et `openid`, `email`).
+   - **Scopes** : ajoute `.../auth/drive.readonly` et `.../auth/drive.file`
+     (et `openid`, `email`).
    - **Test users** : ajoute les emails autorises tant que l'app est en mode
      "Testing".
 4. **Credentials** :

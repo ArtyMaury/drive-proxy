@@ -34,12 +34,16 @@ async function driveFetch(path, accessToken, init = {}) {
  */
 export async function listFiles(accessToken, { parentId, pageToken, search } = {}) {
   const clauses = ["trashed = false"];
-  if (parentId) {
-    clauses.push(`'${parentId.replace(/'/g, "\\'")}' in parents`);
-  }
   if (search) {
+    // En recherche on parcourt tout le Drive, sans filtre de parent.
     const safe = search.replace(/'/g, "\\'");
     clauses.push(`name contains '${safe}'`);
+  } else {
+    // Sinon on ne montre que les enfants directs du dossier courant.
+    // Sans parent explicite, on scope a la racine du Drive ('root'),
+    // sinon Google renvoie tous les fichiers du Drive a plat.
+    const parent = parentId ? parentId.replace(/'/g, "\\'") : "root";
+    clauses.push(`'${parent}' in parents`);
   }
   const params = new URLSearchParams({
     q: clauses.join(" and "),

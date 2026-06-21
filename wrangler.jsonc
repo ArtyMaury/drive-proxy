@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "drive-proxy",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-06-20",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  }
+  // NOTE : la config sensible (emails autorises, URL de base, domaine custom)
+  // n'est PAS versionnee ici.
+  //   - ALLOWED_EMAILS et APP_BASE_URL : a definir en secrets Cloudflare
+  //       npx wrangler secret put ALLOWED_EMAILS
+  //       npx wrangler secret put APP_BASE_URL
+  //     (ou en local dans .dev.vars, voir .dev.vars.example)
+  //   - Domaine custom : a brancher via le dashboard Cloudflare
+  //       Workers & Pages > (ce worker) > Settings > Domains & Routes
+}

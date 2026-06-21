@@ -1,0 +1,26 @@
+# Variables d'environnement locales pour `wrangler dev`.
+# Copie ce fichier en `.dev.vars` et remplis les valeurs.
+# NE COMMITTE JAMAIS `.dev.vars` (il est dans .gitignore).
+#
+# En production, ces valeurs se configurent comme secrets Cloudflare :
+#   npx wrangler secret put GOOGLE_CLIENT_ID
+#   npx wrangler secret put GOOGLE_CLIENT_SECRET
+#   npx wrangler secret put SESSION_SECRET
+#   npx wrangler secret put ALLOWED_EMAILS
+#   npx wrangler secret put APP_BASE_URL
+
+# --- Identifiants OAuth Google (depuis Google Cloud Console) ---
+GOOGLE_CLIENT_ID="xxxxxxxxxxxx.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="GOCSPX-xxxxxxxxxxxxxxxxxxxx"
+
+# --- Cle aleatoire pour signer/chiffrer les cookies de session ---
+# Genere-en une avec : openssl rand -base64 48
+SESSION_SECRET="remplace-par-une-longue-chaine-aleatoire"
+
+# --- Liste blanche des emails autorises (separes par des virgules) ---
+ALLOWED_EMAILS="toi@example.com,collegue@example.com"
+
+# --- URL de base de l'app ---
+# En local : http://localhost:8787
+# En prod  : l'URL publique de ton Worker (workers.dev ou ton domaine custom).
+APP_BASE_URL="http://localhost:8787"
